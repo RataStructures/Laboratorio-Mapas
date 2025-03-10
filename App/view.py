@@ -3,7 +3,7 @@
  * de Los Andes
  *
  *
- * Desarrolado para el curso ISIS1225 - Estructuras de Datos y Algoritmos
+ * Desarrollado para el curso ISIS1225 - Estructuras de Datos y Algoritmos
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -47,6 +47,7 @@ def new_logic():
     control = logic.new_logic()
     return control
 
+# TODO: Incluir las mediciones de tiempo y uso de memoria en la ejecución de la consulta.
 def load_data(control):
     """
     Solicita a la controlador que cargue los datos
@@ -111,24 +112,26 @@ def print_books_by_tag(tag_name, books_by_tag):
     else:
         print("No se encontró el tag") 
         
-def print_books_by_auth_year(author, pub_year, books_by_author_year):
+def print_books_by_auth_year(author, pub_year, books_by_author_year, tiempo_transcurrido, memoria_usada):
     """
-    Recorre la lista de libros de un autor para un año de publicaión especificos, imprimiendo
-    la información solicitada.
+    Recorre la lista de libros de un autor para un año de publicación específico, 
+    imprimiendo la información solicitada junto con las métricas de rendimiento.
     """
     if books_by_author_year:
-        print(f"Para el autor {author} se encontraron los siguientes libros publicados en el año {pub_year}: " )
+        print(f"Para el autor {author}, se encontraron los siguientes libros publicados en el año {pub_year}:")
         for book_pos in range(0, al.size(books_by_author_year)):
             book = al.get_element(books_by_author_year, book_pos)
-            print('Titulo: ' + book['title'] + '  ISBN: ' +
-                  book['isbn'] + ' Rating: ' + book['average_rating'] +
-                    ' Work text reviews count : ' + book['work_text_reviews_count'])
+            print(f"Titulo: {book['title']}  ISBN: {book['isbn']}  Rating: {book['average_rating']}  "
+                  f"Work text reviews count: {book['work_text_reviews_count']}")
     else:
         print("No se encontró el autor o el tag")
+    
+    # Imprimir métricas de rendimiento
+    print(f"\nTiempo transcurrido: {tiempo_transcurrido:.2f} ms")
+    print(f"Memoria utilizada: {memoria_usada:.2f} kB\n")
+
      
 exit_opt_lt = ("s", "S", "1", True, "true", "True", "si", "Si", "SI")
-
-
 
 
 # main del ejercicio
@@ -145,7 +148,7 @@ def main():
     while working:
         print_menu()
         inputs = input("Seleccione una opción para continuar\n")
-            
+        # TODO: agregar tiempo de ejecución y consumo de memoria
         if int(inputs[0]) == 1:
             print("Cargando información de los archivos ....")
             bk, at, tg, bktg = load_data(control)
@@ -172,10 +175,12 @@ def main():
                  
         elif int(inputs[0]) == 5:
             author_name = input("Ingrese el nombre del autor que desea buscar:\n")
-            #Tenga en cuenta el formato de los años de publicación en los datos y realice el manejo correspondiente.
-            pub_year = input("Ingrese la fecha de publicación  que desea buscar:\n") 
-            books_by_author_pub_year = logic.get_books_by_author_pub_year(control, author_name, pub_year)
-            print_books_by_auth_year(author_name, pub_year, books_by_author_pub_year)
+            pub_year = input("Ingrese la fecha de publicación que desea buscar:\n") 
+
+            books_by_author_pub_year, tiempo_transcurrido, memoria_usada = logic.get_books_by_author_pub_year(control, author_name, pub_year)
+
+            print_books_by_auth_year(author_name, pub_year, books_by_author_pub_year, tiempo_transcurrido, memoria_usada)
+
             
         elif int(inputs[0]) == 8:
             # confirmar salida del programa

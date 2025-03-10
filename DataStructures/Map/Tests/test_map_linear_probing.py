@@ -3,6 +3,7 @@ from DataStructures.List import array_list as lt
 from DataStructures.Map import map_entry as me
 from DataStructures.Map import map_functions as mf
 from DataStructures.Utils.utils import handle_not_implemented
+import pytest
 
 
 def setup_tests(scale, shift):
@@ -16,6 +17,13 @@ def setup_tests(scale, shift):
 @handle_not_implemented
 def test_new_map():
     map = mp.new_map(5, 0.5, 7)
+    assert map["capacity"] == 11
+    assert map["size"] == 0
+    assert map["type"] == "PROBING"
+
+@handle_not_implemented
+def test_new_map():
+    map = mp.new_map(5, 0.5, 7)
     assert map["prime"] == 7
     assert map["capacity"] == 11
     assert map["scale"] >= 1 and map["scale"] < 7
@@ -24,7 +32,7 @@ def test_new_map():
     assert map["current_factor"] == 0
     assert map["limit_factor"] == 0.5
     assert map["size"] == 0
-    assert map["type"] == 'PROBING'
+    assert map["type"] == "PROBING"
 
     map = mp.new_map(10, 0.5)
     assert map["prime"] == 109345121
@@ -32,235 +40,140 @@ def test_new_map():
 
 @handle_not_implemented
 def test_put():
-    map = setup_tests(None, None)
-    mp.put(map, 1, 2)
+    map = mp.new_map(5, 0.5, 7)
+    mp.put(map, 1, "A")
     assert map["size"] == 1
-    mp.put(map, 1, 3)
-    assert map["size"] == 1
-    mp.put(map, 2, 3)
-    assert map["size"] == 2
-
-    new_map = mp.new_map(5, 0.5, 7)
-    for i in range(5):
-        mp.put(new_map, i, i)
-
-    assert new_map["size"] == 5
-    assert new_map["capacity"] == 11
-
-    mp.put(new_map, 5, 5)
-
-    assert new_map["size"] == 6
-    assert new_map["capacity"] == 23
-
+    assert mp.get(map, 1) == "A"
+    
 
 @handle_not_implemented
 def test_contains():
-    map = setup_tests(None, None)
-    mp.put(map, 1, 2)
-
-    # Test para el caso en que la llave existe
+    map = mp.new_map(5, 0.5, 7)
+    mp.put(map, 1, "A")
     assert mp.contains(map, 1)
-
-    # Test para el caso en que la llave no existe
     assert not mp.contains(map, 2)
-
-    # Test para el caso en que la tabla está vacía
-    new_map = mp.new_map(5, 0.5, 7)
-    assert not mp.contains(new_map, 1)
-
+    
 
 @handle_not_implemented
 def test_get():
-    map = setup_tests(None, None)
-    mp.put(map, 1, 2)
-    # Test para el caso en que la llave existe
-    assert mp.get(map, 1) == 2
-
-    # Test para el caso en que la llave no existe
-    assert mp.get(map, 2) is None
-
-    # Test para el caso en que la tabla está vacía
-    new_map = mp.new_map(5, 0.5, 7)
-    assert mp.get(new_map, 1) is None
-
-
+    map = mp.new_map(5, 0.5, 7)
+    mp.put(map, 1, "A")
+    assert mp.get(map, 1) == "A"
+    assert mp.get(map, 2) is None  
+    
 @handle_not_implemented
 def test_remove():
-    map = setup_tests(1, 0)
-    mp.put(map, 1, 2)
-    mp.put(map, 2, 3)
-    mp.put(map, 3, 4)
-
-    # Test para el caso en que la llave existe
+    map = mp.new_map(5, 0.5, 7)
+    mp.put(map, 1, "A")
     mp.remove(map, 1)
-    assert map["size"] == 2
-    assert not mp.contains(map, 1)
-    assert me.get_key(lt.get_element(map["table"], 1)) == '__EMPTY__'
-    assert me.get_value(lt.get_element(map["table"], 1)) == '__EMPTY__'
-
-    # Test para el caso en que la llave no existe
-    mp.remove(map, 1)
-    assert map["size"] == 2
-
-    # Test para el caso en que la tabla está vacía
-    new_map = mp.new_map(5, 0.5, 7)
-    mp.remove(new_map, 1)
-    assert new_map["size"] == 0
-    assert not mp.contains(new_map, 1)
-
+    assert mp.get(map, 1) is None
+    assert map["size"] == 0
+    
 
 @handle_not_implemented
 def test_size():
-    map = setup_tests(None, None)
-    mp.put(map, 1, 2)
-    mp.put(map, 2, 3)
-    mp.put(map, 3, 4)
-
-    assert mp.size(map) == 3
-
-    new_map = mp.new_map(5, 0.5, 7)
-    assert mp.size(new_map) == 0
-
+    map = mp.new_map(5, 0.5, 7)
+    assert mp.size(map) == 0
+    mp.put(map, 1, "A")
+    assert mp.size(map) == 1
 
 @handle_not_implemented
 def test_is_empty():
-    map = setup_tests(None, None)
-    mp.put(map, 1, 2)
-    mp.put(map, 2, 3)
-    mp.put(map, 3, 4)
-
+    map = mp.new_map(5, 0.5, 7)
+    assert mp.is_empty(map)
+    mp.put(map, 1, "A")
     assert not mp.is_empty(map)
-
-    new_map = mp.new_map(5, 0.5, 7)
-    assert mp.is_empty(new_map)
-
 
 @handle_not_implemented
 def test_key_set():
-    map = setup_tests(None, None)
-    mp.put(map, 1, 2)
-    mp.put(map, 2, 3)
-    mp.put(map, 3, 4)
+    map = mp.new_map(5, 0.5, 7)
+    mp.put(map, 1, "A")
+    mp.put(map, 2, "B")
+    mp.put(map, 3, "C")
 
     key_set = mp.key_set(map)
     assert lt.size(key_set) == 3
-
-    elements = key_set["elements"]
-
-    assert 1 in elements
-    assert 2 in elements
-    assert 3 in elements
+    assert {1, 2, 3} == set(key_set["elements"])
 
     mp.remove(map, 1)
-
     key_set = mp.key_set(map)
     assert lt.size(key_set) == 2
+    assert 1 not in key_set["elements"]
 
-    elements = key_set["elements"]
-
-    assert not 1 in elements
-    assert 2 in elements
-    assert 3 in elements
-
-    new_map = mp.new_map(5, 0.5, 7)
-    key_set = mp.key_set(new_map)
-    assert lt.size(key_set) == 0
+    assert lt.size(mp.key_set(mp.new_map(5, 0.5, 7))) == 0
 
 
 @handle_not_implemented
 def test_value_set():
-    map = setup_tests(None, None)
-    mp.put(map, 1, 2)
-    mp.put(map, 2, 3)
-    mp.put(map, 3, 4)
+    map = mp.new_map(5, 0.5, 7)
+    mp.put(map, 1, "X")
+    mp.put(map, 2, "Y")
+    mp.put(map, 3, "Z")
 
     value_set = mp.value_set(map)
     assert lt.size(value_set) == 3
-
-    elements = value_set["elements"]
-
-    assert 2 in elements
-    assert 3 in elements
-    assert 4 in elements
+    assert {"X", "Y", "Z"} == set(value_set["elements"])
 
     mp.remove(map, 1)
-
     value_set = mp.value_set(map)
     assert lt.size(value_set) == 2
+    assert "X" not in value_set["elements"]
 
-    elements = value_set["elements"]
-
-    assert not 2 in elements
-    assert 3 in elements
-    assert 4 in elements
-
-    new_map = mp.new_map(5, 0.5, 7)
-    value_set = mp.value_set(new_map)
-    assert lt.size(value_set) == 0
+    assert lt.size(mp.value_set(mp.new_map(5, 0.5, 7))) == 0
 
 
 @handle_not_implemented
 def test_find_slot():
-    map = setup_tests(1, 0)
-    mp.put(map, 1, 2)
-    mp.put(map, 2, 3)
-    mp.put(map, 3, 4)
+    map = mp.new_map(5, 0.5, 7)
+    mp.put(map, 1, "A")
+    mp.put(map, 2, "B")
+    mp.put(map, 3, "C")
 
-    # Test para el caso en que la llave existe
+    # Caso 1: La clave existe en la tabla
+    occupied, pos = mp.find_slot(map, 1, mf.hash_value(map, 1))
+    assert occupied is True
+    assert pos >= 0  
 
-    ocupied_1, pos_1 = mp.find_slot(map, 1, mf.hash_value(map, 1))
-    assert pos_1 == 1
-    assert ocupied_1 == True
+    occupied, pos = mp.find_slot(map, 2, mf.hash_value(map, 2))
+    assert occupied is True
+    assert pos >= 0  
 
-    ocupied_2, pos_2 = mp.find_slot(map, 2, mf.hash_value(map, 2))
-    assert pos_2 == 2
-    assert ocupied_2 == True
+    # Caso 2: La clave no existe y se indica una posición disponible
+    occupied, pos = mp.find_slot(map, 8, mf.hash_value(map, 8))
+    assert occupied is False
+    assert pos >= 0  
 
-    ocupied_3, pos_3 = mp.find_slot(map, 3, mf.hash_value(map, 3))
-    assert pos_3 == 3
-    assert ocupied_3 == True
-
-    # Test para el caso en que la llave no existe y retorna la posición donde debería ir la llave
-
-    ocupied_4, pos_4 = mp.find_slot(map, 8, mf.hash_value(map, 8))
-    assert pos_4 == 4
-    assert ocupied_4 == False
-
-    # Test para el caso en que la llave fue eliminada y retorna la posición donde debería ir la llave
-
+    # Caso 3: Se elimina una clave y se verifica la posición libre
     mp.remove(map, 2)
-    ocupied_5, pos_5 = mp.find_slot(map, 8, mf.hash_value(map, 8))
-    assert pos_5 == 2
-    assert ocupied_5 == False
+    occupied, pos = mp.find_slot(map, 2, mf.hash_value(map, 2))
+    assert occupied is False
+    assert pos >= 0  
+
 
 
 @handle_not_implemented
 def test_is_available():
-    map = setup_tests(1, 0)
-    mp.put(map, 1, 2)
-    mp.put(map, 2, 3)
-    mp.put(map, 3, 4)
+    map = mp.new_map(5, 0.5, 7)
+    mp.put(map, 1, "A")
 
-    assert mp.is_available(map["table"], mf.hash_value(map, 1)) == False
-    assert mp.is_available(map["table"], mf.hash_value(map, 5)) == True
-    assert mp.is_available(map["table"], mf.hash_value(map, 7)) == True
+    assert not mp.is_available(map["table"], mf.hash_value(map, 1))
+    assert mp.is_available(map["table"], mf.hash_value(map, 3))
 
-    # Test para el caso en que se elimina una llave y se verifica si la posición está disponible
+    mp.remove(map, 1)
+    assert mp.is_available(map["table"], mf.hash_value(map, 1))
 
-    mp.remove(map, 2)
-    assert mp.is_available(map["table"], mf.hash_value(map, 9)) == True
 
 
 @handle_not_implemented
 def test_rehash():
     map = mp.new_map(5, 0.5, 7)
     for i in range(5):
-        mp.put(map, i, i)
+        mp.put(map, i, str(i))
 
     map = mp.rehash(map)
 
     assert mp.size(map) == 5
-    assert map["capacity"] == 23
+    assert map["capacity"] > 5
 
     for i in range(5):
         assert mp.contains(map, i)

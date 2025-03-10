@@ -3,7 +3,7 @@
  * Universidad de Los Andes
  *
  *
- * Desarrolado para el curso ISIS1225 - Estructuras de Datos y Algoritmos
+ * Desarrollado para el curso ISIS1225 - Estructuras de Datos y Algoritmos
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,15 +26,16 @@
 
 import os
 import csv
+import time
+import tracemalloc
+
 
 # TODO Realice la importación del mapa linear probing
 # TODO Realice la importación de ArrayList como estructura de datos auxiliar para sus requerimientos
+# TODO Realice la importación del mapa separate chaining
 
 
-
-data_dir = os.path.dirname(os.path.realpath('__file__')) + '/Data/'
-
-
+data_dir = os.path.dirname(os.path.realpath('__file__')) + '/Data/GoodReads/'
 
 def new_logic():
     """
@@ -54,20 +55,20 @@ def new_logic():
 
     #Tabla de Hash que contiene los libros indexados por good_reads_book_id  
     #(good_read_id -> book)
-    catalog['books_by_id'] = #TODO completar la creación del mapa
+    catalog['books_by_id'] = None #TODO completar la creación del mapa
 
     #Tabla de Hash con la siguiente pareja llave valor: (author_name -> List(books))
-    catalog['books_by_authors'] = #TODO completar la creación del mapa
+    catalog['books_by_authors'] = None #TODO completar la creación del mapa
 
     #Tabla de Hash con la siguiente pareja llave valor: (tag_name -> tag)
-    catalog['tags'] = #TODO completar la creación del mapa
+    catalog['tags'] = None #TODO completar la creación del mapa
 
     #Tabla de Hash con la siguiente pareja llave valor: (tag_id -> book_tags)
     catalog['book_tags'] = lp.new_map(1000,0.7)
 
     #Tabla de Hash principal que contiene sub-mapas dentro de los valores
     #con la siguiente representación de la pareja llave valor: (author_name -> (original_publication_year -> list(books)))
-    catalog['books_by_year_author'] = #TODO completar la creación del mapa
+    catalog['books_by_year_author'] = None #TODO completar la creación del mapa
     
     return catalog
 
@@ -75,6 +76,7 @@ def new_logic():
 # Funciones para la carga de datos
 #  -------------------------------------------------------------
 
+#TODO: incorporar las funciones para toma de tiempo y memoria
 def load_data(catalog):
     """
     Carga los datos de los archivos y cargar los datos en la
@@ -92,7 +94,7 @@ def load_books(catalog):
     cada uno de ellos, se crea en la lista de autores, a dicho autor y una
     referencia al libro que se esta procesando.
     """
-    booksfile = data_dir + "books-small.csv"
+    booksfile = data_dir + "books.csv"
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for book in input_file:
         add_book(catalog, book)
@@ -114,7 +116,7 @@ def load_books_tags(catalog):
     """
     Carga la información que asocia tags con libros.
     """
-    bookstagsfile = data_dir +"book_tags-small.csv"
+    bookstagsfile = data_dir +"book_tags.csv"
     input_file = csv.DictReader(open(bookstagsfile, encoding='utf-8'))
     for booktag in input_file:
         add_book_tag(catalog, booktag)
@@ -207,7 +209,7 @@ def add_book_author_and_year(catalog, author_name, book):
             pub_year_map = lp.new_map(1000,0.7)
             lp.put(pub_year_map,pub_year,book)
     else:
-        # TODO Completar escenario donde no se había agregado el autor al mapa principal
+        pass # TODO Completar escenario donde no se había agregado el autor al mapa principal
     return catalog
 
 
@@ -234,7 +236,7 @@ def add_book_tag(catalog, book_tag):
         book_tag_list = lp.get(catalog['book_tags'],t['tag_id'])
         al.add_last(book_tag_list,book_tag)
     else:
-        #TODO Completar escenario donde el book_tag no se había agregado al mapa   
+        pass #TODO Completar escenario donde el book_tag no se había agregado al mapa   
     return catalog
 
 #  -------------------------------------------------------------
@@ -275,10 +277,27 @@ def get_books_by_author_pub_year(catalog, author_name, pub_year):
     """
     - Se obtiene el mapa asociado al author_name dado
     - Si el author existe, se obtiene el mapa asociado al año de publicación
-    Retorna los libros asociados a un autor y un año de publicación especificos
+    Retorna los libros asociados a un autor y un año de publicación específicos
     """
-    #TODO Completar función de consulta
-    pass
+    # Iniciar medición de tiempo
+    start_time = getTime()
+    
+    # Iniciar medición de memoria
+    tracemalloc.start()
+    start_memory = getMemory()
+    
+    # TODO: Completar la función de consulta
+    resultado = None  # Sustituir con la lógica real
+    
+    # Detener medición de memoria
+    stop_memory = getMemory()
+    
+    # Calcular medición de tiempo y memoria
+    end_time = getTime()
+    tiempo_transcurrido = deltaTime(end_time, start_time)
+    memoria_usada = deltaMemory(start_memory, stop_memory)
+    
+    return resultado, tiempo_transcurrido, memoria_usada
 
 
 #  -------------------------------------------------------------
@@ -300,3 +319,33 @@ def tag_size(catalog):
 def book_tag_size(catalog):
     return lp.size(catalog['book_tags'])
 
+#  -------------------------------------------------------------
+# Funciones utilizadas para obtener memoria y tiempo
+#  -------------------------------------------------------------
+
+def getTime():
+    """
+    Devuelve el instante tiempo de procesamiento en milisegundos
+    """
+    return float(time.perf_counter() * 1000)
+
+def getMemory():
+    """
+    Toma una muestra de la memoria alocada en un instante de tiempo
+    """
+    return tracemalloc.take_snapshot()
+
+def deltaTime(end, start):
+    """
+    Devuelve la diferencia entre tiempos de procesamiento muestreados
+    """
+    return float(end - start)
+
+def deltaMemory(start_memory, stop_memory):
+    """
+    Calcula la diferencia en memoria alocada del programa entre dos
+    instantes de tiempo y devuelve el resultado en kBytes
+    """
+    memory_diff = stop_memory.compare_to(start_memory, "filename")
+    delta_memory = sum(stat.size_diff for stat in memory_diff) / 1024.0
+    return delta_memory
