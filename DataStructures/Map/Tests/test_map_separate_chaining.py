@@ -29,7 +29,8 @@ def test_put():
     assert map["size"] == 1
     mp.put(map, 1, 3)
     assert map["size"] == 1
-    
+
+
 @handle_not_implemented
 def test_contains():
     map = setup_tests(None, None)
@@ -56,6 +57,7 @@ def test_get():
     new_map = mp.new_map(5, 0.5, 7)
     assert mp.get(new_map, 1) is None
 
+
 @handle_not_implemented
 def test_remove():
     map = setup_tests(1, 0)
@@ -72,6 +74,7 @@ def test_remove():
     mp.remove(map, 2)
     assert map["size"] == 1
 
+
 @handle_not_implemented
 def test_size():
     map = setup_tests(None, None)
@@ -84,6 +87,7 @@ def test_size():
     new_map = mp.new_map(5, 0.5, 7)
     assert mp.size(new_map) == 0
 
+
 @handle_not_implemented
 def test_is_empty():
     map = setup_tests(None, None)
@@ -92,6 +96,7 @@ def test_is_empty():
     # Caso: mapa no vacío
     mp.put(map, 1, 2)
     assert not mp.is_empty(map)
+
 
 @handle_not_implemented
 def test_key_set():
@@ -126,11 +131,12 @@ def test_value_set():
     assert 100 in elements
     assert 200 in elements
 
+
 @handle_not_implemented
 def test_rehash():
     map = mp.new_map(5, 0.5, 7)
     initial_capacity = map["capacity"]
-    for i in range(6):  
+    for i in range(6):
         mp.put(map, i, i*10)
     assert map["capacity"] > initial_capacity
     for i in range(6):

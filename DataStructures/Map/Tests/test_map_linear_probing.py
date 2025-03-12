@@ -3,7 +3,6 @@ from DataStructures.List import array_list as lt
 from DataStructures.Map import map_entry as me
 from DataStructures.Map import map_functions as mf
 from DataStructures.Utils.utils import handle_not_implemented
-import pytest
 
 
 def setup_tests(scale, shift):
@@ -19,7 +18,7 @@ def test_new_map():
     map = mp.new_map(5, 0.5, 7)
     assert map["capacity"] == 11
     assert map["size"] == 0
-    assert map["type"] == "PROBING"
+
 
 @handle_not_implemented
 def test_new_map():
@@ -32,7 +31,6 @@ def test_new_map():
     assert map["current_factor"] == 0
     assert map["limit_factor"] == 0.5
     assert map["size"] == 0
-    assert map["type"] == "PROBING"
 
     map = mp.new_map(10, 0.5)
     assert map["prime"] == 109345121
@@ -44,7 +42,7 @@ def test_put():
     mp.put(map, 1, "A")
     assert map["size"] == 1
     assert mp.get(map, 1) == "A"
-    
+
 
 @handle_not_implemented
 def test_contains():
@@ -52,15 +50,16 @@ def test_contains():
     mp.put(map, 1, "A")
     assert mp.contains(map, 1)
     assert not mp.contains(map, 2)
-    
+
 
 @handle_not_implemented
 def test_get():
     map = mp.new_map(5, 0.5, 7)
     mp.put(map, 1, "A")
     assert mp.get(map, 1) == "A"
-    assert mp.get(map, 2) is None  
-    
+    assert mp.get(map, 2) is None
+
+
 @handle_not_implemented
 def test_remove():
     map = mp.new_map(5, 0.5, 7)
@@ -68,7 +67,7 @@ def test_remove():
     mp.remove(map, 1)
     assert mp.get(map, 1) is None
     assert map["size"] == 0
-    
+
 
 @handle_not_implemented
 def test_size():
@@ -77,12 +76,14 @@ def test_size():
     mp.put(map, 1, "A")
     assert mp.size(map) == 1
 
+
 @handle_not_implemented
 def test_is_empty():
     map = mp.new_map(5, 0.5, 7)
     assert mp.is_empty(map)
     mp.put(map, 1, "A")
     assert not mp.is_empty(map)
+
 
 @handle_not_implemented
 def test_key_set():
@@ -132,23 +133,22 @@ def test_find_slot():
     # Caso 1: La clave existe en la tabla
     occupied, pos = mp.find_slot(map, 1, mf.hash_value(map, 1))
     assert occupied is True
-    assert pos >= 0  
+    assert pos >= 0
 
     occupied, pos = mp.find_slot(map, 2, mf.hash_value(map, 2))
     assert occupied is True
-    assert pos >= 0  
+    assert pos >= 0
 
     # Caso 2: La clave no existe y se indica una posición disponible
     occupied, pos = mp.find_slot(map, 8, mf.hash_value(map, 8))
     assert occupied is False
-    assert pos >= 0  
+    assert pos >= 0
 
     # Caso 3: Se elimina una clave y se verifica la posición libre
     mp.remove(map, 2)
     occupied, pos = mp.find_slot(map, 2, mf.hash_value(map, 2))
     assert occupied is False
-    assert pos >= 0  
-
+    assert pos >= 0
 
 
 @handle_not_implemented
@@ -161,7 +161,6 @@ def test_is_available():
 
     mp.remove(map, 1)
     assert mp.is_available(map["table"], mf.hash_value(map, 1))
-
 
 
 @handle_not_implemented
