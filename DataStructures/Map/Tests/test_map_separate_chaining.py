@@ -137,8 +137,8 @@ def test_rehash():
     map = mp.new_map(5, 0.5, 7)
     initial_capacity = map["capacity"]
     for i in range(6):
-        mp.put(map, i, i*10)
+        mp.put(map, i, i * 10)
     assert map["capacity"] > initial_capacity
     for i in range(6):
         assert mp.contains(map, i)
-        assert mp.get(map, i) == i*10
+        assert mp.get(map, i) == i * 10

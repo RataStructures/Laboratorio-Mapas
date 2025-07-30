@@ -1,5 +1,5 @@
 """
-  Estructura que contiene la información a guardar en una ``entry`` de un Map
+Estructura que contiene la información a guardar en una ``entry`` de un Map
 """
 
 

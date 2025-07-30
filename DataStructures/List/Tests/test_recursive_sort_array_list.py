@@ -5,6 +5,7 @@ un_ordered_list = [30, 50, 22, 10, 11, 13, 15, 14, 12, 17, 19, 18, 16, 20, 21]
 ordered_list = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 30, 50]
 reference_inverted_list = [50, 30, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10]
 
+
 def setup_tests():
     empty_list = lt.new_list()
     one_element_list = lt.new_list()
@@ -16,15 +17,17 @@ def setup_tests():
     for i in range(0, 15):
         lt.add_last(random_list, un_ordered_list[i])
 
-    for i in range(15,0,-1):
+    for i in range(15, 0, -1):
         lt.add_last(inverted_list, i)
     return empty_list, one_element_list, random_list, inverted_list
+
 
 def sort_criteria_increasingly(element1, element2):
     is_sorted = False
     if element1 < element2:
         is_sorted = True
     return is_sorted
+
 
 @handle_not_implemented
 def test_merge_sort():
@@ -50,6 +53,7 @@ def test_merge_sort():
     lt.merge_sort(inverted_list, sort_criteria_increasingly)
     assert lt.size(inverted_list) == 15
 
+
 @handle_not_implemented
 def test_quick_sort():
     empty_list, one_element_list, random_lista, inverted_list = setup_tests()
@@ -74,5 +78,3 @@ def test_quick_sort():
 
     lt.quick_sort(inverted_list, sort_criteria_increasingly)
     assert lt.size(inverted_list) == 15
-
-

@@ -175,8 +175,7 @@ def test_exchange():
     lista = setup_tests()
 
     lista["size"] = 1
-    lista["first"] = {"info": 1, "next": {
-        "info": 2, "next": {"info": 3, "next": None}}}
+    lista["first"] = {"info": 1, "next": {"info": 2, "next": {"info": 3, "next": None}}}
     lista["last"] = {"info": 3, "next": None}
 
     assert lt.exchange(lista, 0, 0) is not None

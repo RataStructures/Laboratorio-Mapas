@@ -2,7 +2,7 @@ import os
 
 
 def execute_pytest_test(test_name):
-    os.system(f"pytest -v -k \"{test_name}\"")
+    os.system(f'pytest -v -k "{test_name}"')
 
 
 def print_test_options():
@@ -96,11 +96,11 @@ if __name__ == "__main__":
     if input_option == "4":
         execute_stack_tests()
         runned = True
-        
+
     if input_option.startswith("5"):
         execute_sorting_tests()
         runned = True
-        
+
     if input_option.startswith("6"):
         execute_map_tests()
         runned = True

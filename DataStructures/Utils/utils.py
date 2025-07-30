@@ -12,9 +12,11 @@ def handle_not_implemented(func):
             attribute = regex_result[1]
             if "has no attribute " in str(exp):
                 pytest.skip(
-                    attribute + "() is not implemented yet at module: " + module)
+                    attribute + "() is not implemented yet at module: " + module
+                )
             else:
                 raise exp
         except:
             raise
+
     return wrapper
