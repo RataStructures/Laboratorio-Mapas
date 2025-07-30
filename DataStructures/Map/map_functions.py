@@ -4,13 +4,6 @@ import math
 
 
 def is_prime(n):
-    """Valida si un número es primo o no
-
-    :param n: Número a validar
-    :type n: int
-
-    :return: True si es primo, False en caso contrario
-    """
     if n <= 1:
         return False
     if n <= 3:
