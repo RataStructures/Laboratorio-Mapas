@@ -1,5 +1,7 @@
 from DataStructures.List import single_linked_list as sl
 
+# Funciones principales de la API
+
 
 def new_queue():
     queue = sl.new_list()

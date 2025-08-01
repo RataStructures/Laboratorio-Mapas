@@ -1,9 +1,6 @@
 from DataStructures.List import single_linked_list as sl
 
-
-def iterator(my_stack, start, end, step):
-    iterator = sl.iterator(my_stack, start, end, step)
-    return iterator
+# Funciones principales de la API
 
 
 def new_stack():

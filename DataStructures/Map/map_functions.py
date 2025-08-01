@@ -1,21 +1,76 @@
 from math import sqrt
-from DataStructures.List import array_list as al
-from DataStructures.Map import map_entry as me
-# Funciones principales de la API
+
+# Funciones auxiliares
+# Estas funciones NO son parte de la API y NO deben ser utilizadas directamente.
+# Son funciones auxiliares internas para la implementación del módulo.
 
 
+def get_table(my_map):
+    table = my_map["table"]
+    return table
 
-def new_capacity(num_elements, load_factor):
+
+def update_size(my_map, size):
+    my_map["size"] = size
+    return my_map
+
+
+def get_capacity(my_map):
+    capacity = my_map["capacity"]
+    return capacity
+
+
+def update_capacity(my_map, capacity):
+    my_map["capacity"] = capacity
+    return my_map
+
+
+def init_capacity(num_elements, load_factor):
     capacity_no_prime = num_elements / load_factor
     capacity_prime = next_prime(capacity_no_prime)
     return capacity_prime
 
-def new_table(capacity):
-    my_table = al.new_list()
-    for _ in range(capacity):
-        entry = me.new_map_entry(None, None)
-        my_table = al.add_last(my_table, entry)
-    return my_table
+
+def get_size(my_map):
+    size = my_map["size"]
+    return size
+
+
+def get_current_factor(my_map):
+    current_factor = my_map["current_factor"]
+    return current_factor
+
+
+def get_limit_factor(my_map):
+    limit_factor = my_map["limit_factor"]
+    return limit_factor
+
+
+def increment_size(my_map):
+    my_map["size"] += 1
+    return my_map
+
+
+def decrease_size(my_map):
+    my_map["size"] -= 1
+    return my_map
+
+
+def update_table(my_map, table):
+    my_map["table"] = table
+    return my_map
+
+
+def update_current_factor(my_map):
+    n = get_size(my_map)
+    capacity = get_capacity(my_map)
+    current_factor = n / capacity
+    my_map["current_factor"] = current_factor
+    return my_map
+
+
+# Funciones principales de la API
+
 
 def is_prime(n):
     if n <= 1:

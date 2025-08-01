@@ -5,16 +5,16 @@ from random import randint
 # Son funciones auxiliares internas para la implementación del módulo.
 
 
+def get_elements(my_list):
+    elements = my_list["elements"]
+    return elements
+
+
 def update_list(my_list, elements):
     size = len(elements)
     my_list["elements"] = elements
     my_list["size"] = size
     return my_list
-
-
-def get_elements(my_list):
-    elements = my_list["elements"]
-    return elements
 
 
 # Función extra (no documentada en la API) que permite iterar sobre los elementos de la lista

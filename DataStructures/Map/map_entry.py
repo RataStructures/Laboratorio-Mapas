@@ -17,8 +17,10 @@ def set_value(my_entry, value):
 
 
 def get_key(my_entry):
-    return my_entry["key"]
+    key = my_entry["key"]
+    return key
 
 
 def get_value(my_entry):
-    return my_entry["value"]
+    value = my_entry["value"]
+    return value

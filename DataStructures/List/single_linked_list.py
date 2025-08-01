@@ -6,16 +6,6 @@ from random import randint
 # Son funciones auxiliares internas para la implementación del módulo.
 
 
-def update_first(my_list, node):
-    my_list["first"] = node
-    return my_list
-
-
-def update_last(my_list, node):
-    my_list["last"] = node
-    return my_list
-
-
 def get_first(my_list):
     first = my_list["first"]
     return first
@@ -24,16 +14,6 @@ def get_first(my_list):
 def get_last(my_list):
     last = my_list["last"]
     return last
-
-
-def increment_size(my_list):
-    my_list["size"] += 1
-    return my_list
-
-
-def decrease_size(my_list):
-    my_list["size"] -= 1
-    return my_list
 
 
 def update_size(my_list, size):
@@ -45,6 +25,26 @@ def update_list(my_list, new_list):
     my_list = update_first(my_list, get_first(new_list))
     my_list = update_last(my_list, get_last(new_list))
     my_list = update_size(my_list, size(new_list))
+    return my_list
+
+
+def update_first(my_list, node):
+    my_list["first"] = node
+    return my_list
+
+
+def update_last(my_list, node):
+    my_list["last"] = node
+    return my_list
+
+
+def increment_size(my_list):
+    my_list["size"] += 1
+    return my_list
+
+
+def decrease_size(my_list):
+    my_list["size"] -= 1
     return my_list
 
 
