@@ -1,7 +1,21 @@
-import math
-
+from math import sqrt
+from DataStructures.List import array_list as al
+from DataStructures.Map import map_entry as me
 # Funciones principales de la API
 
+
+
+def new_capacity(num_elements, load_factor):
+    capacity_no_prime = num_elements / load_factor
+    capacity_prime = next_prime(capacity_no_prime)
+    return capacity_prime
+
+def new_table(capacity):
+    my_table = al.new_list()
+    for _ in range(capacity):
+        entry = me.new_map_entry(None, None)
+        my_table = al.add_last(my_table, entry)
+    return my_table
 
 def is_prime(n):
     if n <= 1:
@@ -12,7 +26,7 @@ def is_prime(n):
     if n % 2 == 0 or n % 3 == 0:
         return False
 
-    for i in range(5, int(math.sqrt(n) + 1), 6):
+    for i in range(5, int(sqrt(n) + 1), 6):
         if n % i == 0 or n % (i + 2) == 0:
             return False
 
