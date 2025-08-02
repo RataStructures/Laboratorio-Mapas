@@ -27,8 +27,8 @@
 import sys
 import App.logic as logic
 
-# TODO Realice la importación del mapa linear probing
-# TODO Realice la importación de ArrayList como estructura de datos auxiliar para sus requerimientos
+from DataStructures.Map import map_linear_probing as lp
+from DataStructures.List import array_list as al
 
 
 """
@@ -50,13 +50,12 @@ def new_logic():
     return control
 
 
-# TODO: Incluir las mediciones de tiempo y uso de memoria en la ejecución de la consulta.
 def load_data(control):
     """
     Solicita a la controlador que cargue los datos
     """
-    books, authors, tags, book_tags = logic.load_data(control)
-    return books, authors, tags, book_tags
+    books, authors, tags, book_tags , time, memory= logic.load_data(control)
+    return books, authors, tags, book_tags, time, memory
 
 
 #  -------------------------------------------------------------
@@ -103,6 +102,7 @@ def print_books_by_author(author, books_by_author):
     """
     if books_by_author:
         print(f"Para el autor {author} se encontraron los siguientes libros: ")
+        print(books_by_author)
         for book_pos in range(0, al.size(books_by_author)):
             book = al.get_element(books_by_author, book_pos)
             print(
@@ -183,14 +183,15 @@ def main():
     while working:
         print_menu()
         inputs = input("Seleccione una opción para continuar\n")
-        # TODO: agregar tiempo de ejecución y consumo de memoria
         if int(inputs[0]) == 1:
             print("Cargando información de los archivos ....")
-            bk, at, tg, bktg = load_data(control)
+            bk, at, tg, bktg, time, memory = load_data(control)
             print("Libros cargados: " + str(bk))
             print("Autores cargados: " + str(at))
             print("Géneros cargados: " + str(tg))
             print("Asociación de Géneros a Libros cargados: " + str(bktg))
+            print(f"Tiempo de carga: {time:.3f} ms")
+            print(f"Uso de memoria: {memory:.3f} kB")
 
         elif int(inputs[0]) == 2:
             number = input(

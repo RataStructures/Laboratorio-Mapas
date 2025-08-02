@@ -15,9 +15,9 @@ def next_hash_value_probing(hash_value, capacity):
 
 def new_empty_table(capacity):
     table = al.new_list()
-    for _ in range(capacity):
-        entry = me.new_map_entry(None, None)
-        table = al.add_last(table, entry)
+    empty_entry = me.new_map_entry(None,None)
+    elements = [empty_entry] * capacity
+    table = al.update_list(table, elements)
     return table
 
 
@@ -53,7 +53,7 @@ def find_slot(my_map, key, hash_value):
         stop = same_key or me.get_key(entry) is None
         ocupied = same_key
         if available:
-            is_first_avail_empty = not first_avail
+            is_first_avail_empty = first_avail is None
             if is_first_avail_empty:
                 first_avail = hash_value
         elif same_key:
@@ -95,7 +95,7 @@ def put(my_map, key, value):
             table = al.change_info(table, first_avail, entry)
             my_map = mf.update_table(my_map, table)
         else:
-            my_map = mf.rehash(my_map)
+            my_map = rehash(my_map)
             my_map = put(my_map, key, value)
     return my_map
 

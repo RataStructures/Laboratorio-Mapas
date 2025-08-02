@@ -11,9 +11,8 @@ from random import randint
 
 def new_empty_table(capacity):
     table = al.new_list()
-    for _ in range(capacity):
-        bucket = sl.new_list()
-        table = al.add_last(table, bucket)
+    elements = [sl.new_list() for _ in range(capacity)]
+    table = al.update_list(table, elements)
     return table
 
 
@@ -136,10 +135,11 @@ def key_set(my_map):
     keys = al.new_list()
     table_size = al.size(table)
     for bucket in al.iterator(table, 0, table_size, 1):
-        bucket_size = sl.size(bucket)
-        for entry in sl.iterator(bucket, 0, bucket_size, 1):
-            key = me.get_key(entry)
-            keys = al.add_last(keys, key)
+        if not sl.is_empty(bucket):
+            bucket_size = sl.size(bucket)
+            for entry in sl.iterator(bucket, 0, bucket_size, 1):
+                key = me.get_key(entry)
+                keys = al.add_last(keys, key)
     return keys
 
 
@@ -148,10 +148,11 @@ def value_set(my_map):
     values = al.new_list()
     table_size = al.size(table)
     for bucket in al.iterator(table, 0, table_size, 1):
-        bucket_size = sl.size(bucket)
-        for entry in sl.iterator(bucket, 0, bucket_size, 1):
-            value = me.get_value(entry)
-            values = al.add_last(values, value)
+        if not sl.is_empty(bucket):
+            bucket_size = sl.size(bucket)
+            for entry in sl.iterator(bucket, 0, bucket_size, 1):
+                value = me.get_value(entry)
+                values = al.add_last(values, value)
     return values
 
 
