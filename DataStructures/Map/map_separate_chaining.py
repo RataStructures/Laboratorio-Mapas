@@ -65,7 +65,7 @@ def put(my_map, key, value):
         limit_factor = mf.get_limit_factor(my_map)
         if current_factor <= limit_factor:
             entry = me.new_map_entry(key, value)
-            bucket = sl.add_last(bucket, entry)
+            bucket = sl.add_first(bucket, entry)
             table = al.change_info(table, hash_value, bucket)
             my_map = mf.update_table(my_map, table)
         else:
